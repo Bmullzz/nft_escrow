@@ -98,7 +98,7 @@ contract NftEscrow {
         require(IERC721(listing.nftContractAddress).getApproved(listing.tokenId) == address(this), "this contract is not approved by seller");
 
         // is there a way to check if the transfer went through in the form of a response of the transfer call?
-        IERC721(listing.nftContractAddress).safeTransferFrom(listing.seller, address(this), listing.tokenId);
+        IERC721(listing.nftContractAddress).transferFrom(listing.seller, address(this), listing.tokenId);
         require(IERC721(listing.nftContractAddress).ownerOf(listing.tokenId) == address(this), "could not transfer nft from owner to this contract");
 
 
@@ -190,7 +190,7 @@ contract NftEscrow {
         require(listing.buyer == msg.sender, "you are not the buyer of this nft"); // change error message
         require(isPaidOff(_listingIndex), "this nft has not been paid off");
 
-        IERC721(listing.nftContractAddress).safeTransferFrom(address(this), _to, listing.tokenId);
+        IERC721(listing.nftContractAddress).transferFrom(address(this), _to, listing.tokenId);
     }
 
     function sellerWithdrawNft(uint256 _listingIndex, address _to) public {
@@ -199,7 +199,7 @@ contract NftEscrow {
         require(listing.seller == msg.sender, "you are not the seller of this nft");
         require(hasDefaulted(_listingIndex), "this seller has not defaulted");
 
-        IERC721(listing.nftContractAddress).safeTransferFrom(address(this), _to, listing.tokenId);
+        IERC721(listing.nftContractAddress).transferFrom(address(this), _to, listing.tokenId);
     }
 
     //change function name
